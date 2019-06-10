@@ -1,8 +1,5 @@
 'use strict';
 
-const commander = require('commander');
-const program = new commander.Command();
-
 const fakeLeaderboard = [
   {
     player: 'lisa',
@@ -18,8 +15,8 @@ const fakeLeaderboard = [
   }
 ];
 
-program.command('leaderboard').action(() => {
+function leaderboard() {
   console.table(fakeLeaderboard);
-});
+}
 
-program.parse(process.argv);
+module.exports = leaderboard;

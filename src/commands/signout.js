@@ -1,10 +1,7 @@
 'use strict';
 
-const commander = require('commander');
-const program = new commander.Command();
-
-program.command('signout').action(() => {
+function signOut() {
   console.log('Signing out');
-});
+}
 
-program.parse(process.argv);
+module.exports = signOut;
