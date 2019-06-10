@@ -1,0 +1,32 @@
+{
+  "name": "@team-nimble/client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "nim": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/401-advanced-javascript-nimble/client.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/401-advanced-javascript-nimble/client/issues"
+  },
+  "homepage": "https://github.com/401-advanced-javascript-nimble/client#readme",
+  "dependencies": {
+    "commander": "^2.20.0",
+    "figlet": "^1.2.3",
+    "prompts": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "jest": "^24.8.0"
+  }
+}
