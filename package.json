@@ -23,7 +23,8 @@
   "dependencies": {
     "commander": "^2.20.0",
     "figlet": "^1.2.3",
-    "prompts": "^2.1.0"
+    "prompts": "^2.1.0",
+    "superagent": "^5.0.6"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
