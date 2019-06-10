@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/401-advanced-javascript-nimble/client#readme",
   "dependencies": {
-    "commander": "^2.20.0"
+    "commander": "^2.20.0",
+    "prompts": "^2.1.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
