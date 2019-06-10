@@ -4,13 +4,11 @@ require('dotenv').config();
 
 const superagent = require('superagent');
 const prompts = require('prompts');
-const commander = require('commander');
-const program = new commander.Command();
 
 const validateEmail = require('../utils/validate_email.js');
 const validatePassword = require('../utils/validate_password.js');
 
-program.command('signup').action(async () => {
+async function signUp() {
   const questions = [
     {
       type: 'text',
@@ -51,6 +49,6 @@ program.command('signup').action(async () => {
   } catch (error) {
     console.error(error);
   }
-});
+}
 
-program.parse(process.argv);
+module.exports = signUp;
