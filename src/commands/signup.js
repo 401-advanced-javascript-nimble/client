@@ -3,7 +3,7 @@
 const commander = require('commander');
 const program = new commander.Command();
 
-program.command('signin').action(() => {
+program.command('signup').action(() => {
   console.log('Signing up');
 });
 
