@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/401-advanced-javascript-nimble/client/issues"
   },
-  "homepage": "https://github.com/401-advanced-javascript-nimble/client#readme"
+  "homepage": "https://github.com/401-advanced-javascript-nimble/client#readme",
+  "dependencies": {
+    "commander": "^2.20.0"
+  }
 }
