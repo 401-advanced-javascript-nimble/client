@@ -1,10 +1,8 @@
 'use strict';
 
-const commander = require('commander');
-const program = new commander.Command();
-
-program.command('play').action(() => {
+function play() {
   require('../lib/client.js');
-});
+}
 
-program.parse(process.argv);
+
+module.exports = play;
