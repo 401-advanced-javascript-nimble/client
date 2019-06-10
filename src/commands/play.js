@@ -1,7 +1,8 @@
 'use strict';
 
 function play() {
-  console.log('Playing the game');
+  require('../lib/client.js');
 }
+
 
 module.exports = play;
