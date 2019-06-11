@@ -13,6 +13,10 @@ const socket = client.connect(process.env.SOCKET_SERVER_URL);
 
 prompt.message = 'Your move';
 
+socket.on('message-from-server', message => {
+  console.log(message);
+});
+
 socket.on('turn', (payload) => {
   showPrompt(payload);
 });
