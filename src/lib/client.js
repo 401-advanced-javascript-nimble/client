@@ -34,8 +34,9 @@ socket.on('game over', (payload) => {
 //Morgana - reusable prompt function
 //calls itself again if an invalid selection is made 
 function showPrompt(payload) {
-  console.log(payload);
-
+  //Morgana - payload at 0 is the game id, payload at 1 is the message
+  console.log(payload[1]);
+  const gameID = payload[0];
   prompt.start();
 
   prompt.get(['stack', 'amount'], (err, data) => {
@@ -45,8 +46,8 @@ function showPrompt(payload) {
     let stack = data.stack;
     let amount = data.amount;
 
-    if(checkChoices(stack, amount, payload)) {
-      socket.emit('move', [stack, amount]);
+    if(checkChoices(stack, amount, payload[1])) {
+      socket.emit('move', [gameID, stack, amount]);
     }
     else {
       showPrompt(payload);
