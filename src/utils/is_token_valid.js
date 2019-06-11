@@ -1,3 +1,8 @@
+/**
+ * @module is_token_valid
+ * Check if a token exist and if it is valid
+ */
+
 'use strict';
 
 const superagent = require('superagent');
