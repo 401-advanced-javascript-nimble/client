@@ -4,6 +4,10 @@ require('dotenv').config();
 
 const superagent = require('superagent');
 const prompts = require('prompts');
+const Configstore = require('configstore');
+const packageJson = require('../../package.json');
+
+const config = new Configstore(packageJson.name);
 
 async function signIn() {
   const questions = [
@@ -26,7 +30,11 @@ async function signIn() {
     const response = await superagent
       .post(`${process.env.API_SERVER_URI}/signin`)
       .auth(username, password);
-    // console.log(response.res.text);
+
+    const token = response.res.text;
+
+    //Becky - Adding a property to our config object to hold the user token.
+    config.set('auth.token', token);
 
     const { value: startNewGame } = await prompts({
       type: 'confirm',
