@@ -8,6 +8,11 @@ const prompts = require('prompts');
 const validateEmail = require('../utils/validate_email.js');
 const validatePassword = require('../utils/validate_password.js');
 
+const Configstore = require('configstore');
+const packageJson = require('../../package.json');
+
+const config = new Configstore(packageJson.name);
+
 async function signUp() {
   const questions = [
     {
@@ -32,20 +37,28 @@ async function signUp() {
         validatePassword(password, 'medium')
           ? true
           : 'The password must be at least 6 characters long and contains a capital letter, and a number, and a special character'
-    }
+    },
   ];
 
   try {
     const { username, email, password } = await prompts(questions);
+    
     const response = await superagent
       .post(`${process.env.API_SERVER_URI}/signup`)
       .send({
         username,
         email,
-        password
+        password,
       });
+
+    const token = response.res.text;
+    console.log('This is the token:', token);
+
+    //Becky - Adding a property to our config object to hold the user token.
+    config.set('auth.token', token);
+
     console.log('account created');
-    // TODO: Joé - handle the response and sign the user in after a successful account creation
+    
   } catch (error) {
     console.error(error);
   }
