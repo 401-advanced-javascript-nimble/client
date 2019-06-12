@@ -2,6 +2,8 @@
 const commander = require('commander');
 const program = new commander.Command();
 
+const welcomeScreen = require('./src/lib/welcome-screen.js');
+
 /**
  * Handler functions
  */
@@ -25,7 +27,18 @@ program.command('signout').action(handleSignOut);
  * Show help when no command is provided
  */
 if (!process.argv.slice(2).length) {
-  program.outputHelp();
+  welcomeScreen();
 }
+
+/**
+ * Handle unsuported commands
+ */
+program.on('command:*', function() {
+  console.error(
+    'Invalid command: %s\nSee --help for a list of available commands.',
+    program.args.join(' ')
+  );
+  program.outputHelp();
+});
 
 program.parse(process.argv);
