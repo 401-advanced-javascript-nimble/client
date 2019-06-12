@@ -1,8 +1,8 @@
 const prompts = require('prompts');
 
-const handlePlay = require('../commands/play.js');
-const handleLeaderboard = require('../commands/leaderboard.js');
-const handleSignOut = require('../commands/signout.js');
+const handlePlay = require('../commands/handle_play.js');
+const handleLeaderboard = require('../commands/handle_leaderboard.js');
+const handleSignOut = require('../commands/handle_signout.js');
 
 module.exports = async username => {
   const fn = await prompts({
