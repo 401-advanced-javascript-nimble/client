@@ -34,7 +34,6 @@ class User {
         });
 
       const token = response.res.text;
-      console.log(token);
 
       //Becky - Adding a property to our config object to hold the user token.
       config.set('auth.token', token);
