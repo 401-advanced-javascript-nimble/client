@@ -13,6 +13,8 @@ const packageJson = require('../../package.json');
 
 const config = new Configstore(packageJson.name);
 
+const username = config.get('auth.username');
+
 const newUser = [
   {
     type: 'toggle',
@@ -43,7 +45,7 @@ const newUser = [
 const returningUser = {
   type: 'select',
   name: 'value',
-  message: 'What do you want to do?',
+  message: `Welcome back ${username}! What do you want to do?`,
   choices: [
     {
       title: '🔒  Create an new account',
@@ -63,19 +65,23 @@ const returningUser = {
 };
 
 module.exports = async () => {
-  clear();
-  figlet('Nim', async (err, data) => {
-    if (err) {
-      console.log('Something went wrong...');
-      console.dir(err);
-      return;
-    }
-    console.log(data);
+  try {
+    clear();
+    figlet('Nim', async (err, data) => {
+      if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+      }
+      console.log(data);
 
-    const fn = await prompts(
-      config.has('auth.token') ? returningUser : newUser
-    );
+      const fn = await prompts(
+        config.has('auth.token') ? returningUser : newUser
+      );
 
-    fn.value();
-  });
+      if (typeof fn.value === 'function') fn.value();
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
