@@ -19,7 +19,7 @@ socket.on('message-from-server', message => {
 });
 
 socket.on('turn', (payload) => {
-  process.stdout.write(ansiEscapes.clearScreen);
+  // process.stdout.write(ansiEscapes.clearScreen);
   showPrompt(payload);
 });
 
