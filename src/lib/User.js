@@ -62,7 +62,7 @@ class User {
 
       console.log(`Welcome back ${this.username}!`);
     } catch (error) {
-      console.error(error);
+      console.error('😨  Oh No! Something went wrong...');
     }
   }
 
