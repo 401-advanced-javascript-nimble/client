@@ -38,10 +38,8 @@ class User {
       //Becky - Adding a property to our config object to hold the user token.
       config.set('auth.token', token);
       config.set('auth.username', this.username);
-
-      console.log(`Welcome onboard ${this.username}`);
     } catch (error) {
-      console.error('😨  Oh No! Something went wrong...');
+      throw new Error();
     }
   }
 
@@ -60,10 +58,8 @@ class User {
       //Becky - Adding a property to our config object to hold the user token.
       config.set('auth.token', token);
       config.set('auth.username', this.username);
-
-      console.log(`Welcome back ${this.username}!`);
     } catch (error) {
-      console.error('😨  Oh No! Something went wrong...');
+      throw new Error();
     }
   }
 

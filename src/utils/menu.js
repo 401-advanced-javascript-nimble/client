@@ -8,7 +8,7 @@ module.exports = async username => {
   const fn = await prompts({
     type: 'select',
     name: 'value',
-    message: `Welcome back ${username}!`,
+    message: `Welcome ${username}!`,
     choices: [
       { title: '🎮  Play', value: handlePlay },
       { title: '🏆  Leaderboard', value: handleLeaderboard },
