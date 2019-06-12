@@ -2,24 +2,42 @@
 
 require('dotenv').config();
 const client = require('socket.io-client');
-const prompt = require('prompt');
+const prompts = require('prompts');
 const sendWin = require('../utils/send_win.js');
+const ansiEscapes = require('ansi-escapes');
 
 //Morgana - use deployed link
 const socket = client.connect(process.env.SOCKET_SERVER_URL);
 
+let count = 1;
 //===================================
 // Client Socket
 //===================================
-
-prompt.message = 'Your move';
 
 socket.on('message-from-server', message => {
   console.log(message);
 });
 
 socket.on('turn', (payload) => {
+  process.stdout.write(ansiEscapes.clearScreen);
   showPrompt(payload);
+});
+
+socket.on('countdown', (payload) => {
+  process.stdout.write(ansiEscapes.cursorSavePosition);
+  process.stdout.write(ansiEscapes.cursorPrevLine);
+  if (count === 2) {
+    process.stdout.write(ansiEscapes.cursorPrevLine);
+  }
+  process.stdout.clearLine();
+  if(payload >= 0) {
+    process.stdout.write('Time left: ');
+    process.stdout.write(payload.toString());
+    if(payload < 10) {
+      process.stdout.write(' <-- Time\'s almost up, hurry!');
+    }
+  }
+  process.stdout.write(ansiEscapes.cursorRestorePosition);
 });
 
 socket.on('game over', (payload) => {
@@ -33,6 +51,7 @@ socket.on('win', () => {
 });
 
 
+
 //===================================
 // Prompt Functionality
 //===================================
@@ -42,23 +61,33 @@ socket.on('win', () => {
 function showPrompt(payload) {
   //Morgana - payload at 0 is the game id, payload at 1 is the message
   console.log(payload[1]);
+  console.log('Your Turn!');
+  console.log('Time left: ', 20);
   const gameID = payload[0];
-  prompt.start();
-
-  prompt.get(['stack', 'amount'], (err, data) => {
-    // if(err) {
-    //   throw new Error(err);
-    // }
-    let stack = data.stack;
-    let amount = data.amount;
-
-    if(checkChoices(stack, amount, payload[1])) {
-      socket.emit('move', [gameID, stack, amount]);
+  const questions = [
+    {
+      type: 'text',
+      name: 'stack',
+      message: 'Which stack?',
+    },
+    {
+      type: 'number',
+      name: 'amount',
+      message: 'How much?',
+      onRender() { count = 2; },
+    },
+  ];
+  (async () => {
+    const response = await prompts(questions);
+    if(checkChoices(response.stack, response.amount, payload[1])) {
+      socket.emit('move', [gameID, response.stack, response.amount]);
+      count = 1;
     }
     else {
+      count = 1;
       showPrompt(payload);
     }
-  });
+  })();
 }
 
 //===================================
