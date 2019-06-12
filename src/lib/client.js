@@ -3,6 +3,7 @@
 require('dotenv').config();
 const client = require('socket.io-client');
 const prompt = require('prompt');
+const sendWin = require('../utils/send_win.js');
 
 //Morgana - use deployed link
 const socket = client.connect(process.env.SOCKET_SERVER_URL);
@@ -24,6 +25,11 @@ socket.on('turn', (payload) => {
 socket.on('game over', (payload) => {
   console.log('Game Over!');
   socket.close();
+});
+
+socket.on('win', () => {
+  console.log('You Won!!');
+  sendWin();
 });
 
 
