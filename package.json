@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/401-advanced-javascript-nimble/client#readme",
   "dependencies": {
+    "cli-table": "^0.3.1",
     "commander": "^2.20.0",
     "configstore": "^4.0.0",
+    "console-table-printer": "^1.0.0-beta17",
     "dotenv": "^8.0.0",
     "figlet": "^1.2.3",
     "prompt": "^1.0.0",
