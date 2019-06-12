@@ -7,13 +7,22 @@ const packageJson = require('../../package.json');
 
 const config = new Configstore(packageJson.name);
 
+/**
+ * Class representing a user
+ */
 class User {
-  constructor(username, password) {
+  /**
+   * Create a user
+   * @param {*} username
+   */
+  constructor(username) {
     this.username = username;
   }
 
   /**
-   * signUp also signIn the user
+   * Create a new user
+   * Sign In
+   * And store the token with Configstore
    */
   async signUp(password) {
     try {
@@ -35,6 +44,10 @@ class User {
     }
   }
 
+  /**
+   * Sign In
+   * And store the token with Configstore
+   */
   async signIn(password) {
     try {
       const response = await superagent
@@ -49,10 +62,13 @@ class User {
 
       console.log(`Welcome back ${this.username}!`);
     } catch (error) {
-      console.error('😨  Oh No! Something went wrong...');
+      console.error(error);
     }
   }
 
+  /**
+   * Delete the stored token
+   */
   static signOut() {
     config.delete('auth.token');
   }
