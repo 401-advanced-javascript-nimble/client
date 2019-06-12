@@ -2,77 +2,51 @@ const prompts = require('prompts');
 const figlet = require('figlet');
 const clear = require('clear');
 
-const handleSignUp = require('../commands/signup.js');
-const handleSignIn = require('../commands/signin.js');
-const handlePlay = require('../commands/play.js');
-const handleLeaderboard = require('../commands/leaderboard.js');
-const handleSignOut = require('../commands/signout.js');
+const User = require('../lib/User.js');
+
+const questions = require('../utils/questions.js');
+const menu = require('../utils/menu.js');
 
 const Configstore = require('configstore');
 const packageJson = require('../../package.json');
 
 const config = new Configstore(packageJson.name);
 
+const isReturning = config.has('auth.token');
 const username = config.get('auth.username');
 
-const newUser = [
-  {
-    type: 'toggle',
-    name: 'existingUser',
-    message: `Welcome stranger, do you have an account?`,
-    initial: true,
-    active: 'maybe',
-    inactive: 'no',
-  },
-  {
-    type: 'text',
-    name: 'username',
-    message: `Alright! What's your username`,
-  },
-  {
-    type: 'text',
-    name: 'username',
-    message: `Great! What's your email (just in case you were to forget your password 🤷‍  )`,
-  },
-  {
-    type: 'text',
-    name: 'about',
-    message: 'Tell something about yourself',
-    initial: 'Why should I?',
-  },
+const newUserQuestions = [
+  questions.WELCOME,
+  questions.USERNAME,
+  questions.PASSWORD,
 ];
-
-const returningUser = {
-  type: 'select',
-  name: 'value',
-  message: `Welcome back ${username}! What do you want to do?`,
-  choices: [
-    {
-      title: '🔒  Create an new account',
-      value: handleSignUp,
-    },
-    {
-      title: '🔑  Sign in',
-      value: handleSignIn,
-      warn: 'Doh! You are already signed in',
-      disabled: true,
-    },
-    { title: '🎮  Play', value: handlePlay },
-    { title: '🏆  Leaderboard', value: handleLeaderboard },
-    { title: '👋  Signout', value: handleSignOut },
-  ],
-  initial: 2,
-};
 
 module.exports = async () => {
   try {
     clear();
-    console.log(figlet.textSync('Nim', 'Standard'));
-    const fn = await prompts(
-      config.has('auth.token') ? returningUser : newUser
-    );
 
-    if (typeof fn.value === 'function') fn.value();
+    console.log(figlet.textSync('Nim', 'Standard'));
+
+    if (isReturning) {
+      const onSubmit = (prompt, response) => {
+        switch (prompt.name) {
+        case 'existingUser':
+          return false;
+        }
+      };
+      const fn = await prompts(menu(username));
+
+      if (typeof fn.value === 'function') fn.value();
+    } else {
+      const { hasAccount, username, password } = await prompts(
+        newUserQuestions
+      );
+
+      const user = new User(username, password);
+
+      if (hasAccount) user.signIn();
+      else user.signUp();
+    }
   } catch (error) {
     console.error(error);
   }
