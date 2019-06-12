@@ -18,10 +18,10 @@ const username = config.get('auth.username');
 const newUser = [
   {
     type: 'toggle',
-    name: 'createAnAccount',
-    message: `Welcome stranger, let's start by creating an account`,
+    name: 'existingUser',
+    message: `Welcome stranger, do you have an account?`,
     initial: true,
-    active: 'ok',
+    active: 'maybe',
     inactive: 'no',
   },
   {
@@ -67,20 +67,12 @@ const returningUser = {
 module.exports = async () => {
   try {
     clear();
-    figlet('Nim', async (err, data) => {
-      if (err) {
-        console.log('Something went wrong...');
-        console.dir(err);
-        return;
-      }
-      console.log(data);
+    console.log(figlet.textSync('Nim', 'Standard'));
+    const fn = await prompts(
+      config.has('auth.token') ? returningUser : newUser
+    );
 
-      const fn = await prompts(
-        config.has('auth.token') ? returningUser : newUser
-      );
-
-      if (typeof fn.value === 'function') fn.value();
-    });
+    if (typeof fn.value === 'function') fn.value();
   } catch (error) {
     console.error(error);
   }
