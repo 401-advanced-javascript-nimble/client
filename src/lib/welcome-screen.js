@@ -17,8 +17,8 @@ const username = config.get('auth.username');
 
 const newUserQuestions = [
   questions.WELCOME,
-  questions.USERNAME,
-  questions.PASSWORD,
+  questions.signUp.USERNAME,
+  questions.signUp.PASSWORD,
 ];
 
 module.exports = async () => {

@@ -54,7 +54,7 @@ class User {
     }
   }
 
-  signOut() {
+  static signOut() {
     config.delete('auth.token');
   }
 }

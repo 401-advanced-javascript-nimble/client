@@ -7,11 +7,11 @@ const welcomeScreen = require('./src/lib/welcome-screen.js');
 /**
  * Handler functions
  */
-const handleSignUp = require('./src/commands/signup.js');
-const handleSignIn = require('./src/commands/signin.js');
-const handlePlay = require('./src/commands/play.js');
-const handleLeaderboard = require('./src/commands/leaderboard.js');
-const handleSignOut = require('./src/commands/signout.js');
+const handleSignUp = require('./src/commands/handle_signup.js');
+const handleSignIn = require('./src/commands/handle_signin.js');
+const handlePlay = require('./src/commands/handle_play.js');
+const handleLeaderboard = require('./src/commands/handle_leaderboard.js');
+const handleSignOut = require('./src/commands/handle_signout.js');
 
 /**
  * Commands
