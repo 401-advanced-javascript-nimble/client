@@ -1,6 +1,4 @@
 const prompts = require('prompts');
-const clear = require('clear');
-const figlet = require('figlet');
 
 const handlePlay = require('../commands/play.js');
 const handleLeaderboard = require('../commands/leaderboard.js');
