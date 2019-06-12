@@ -30,9 +30,11 @@ class User {
         .post(`${process.env.API_SERVER_URI}/signup`)
         .send({
           username: this.username,
+          password,
         });
 
       const token = response.res.text;
+      console.log(token);
 
       //Becky - Adding a property to our config object to hold the user token.
       config.set('auth.token', token);
@@ -52,7 +54,7 @@ class User {
     try {
       const response = await superagent
         .post(`${process.env.API_SERVER_URI}/signin`)
-        .auth(this.username);
+        .auth(this.username, password);
 
       const token = response.res.text;
 
