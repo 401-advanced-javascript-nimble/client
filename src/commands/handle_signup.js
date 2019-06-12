@@ -18,8 +18,8 @@ async function handleSignUp() {
       questions.signUp.PASSWORD,
     ]);
 
-    const user = new User(username, password);
-    user.signUp();
+    const user = new User(username);
+    user.signUp(password);
 
     clear();
     console.log(figlet.textSync('Nim', 'Standard'));

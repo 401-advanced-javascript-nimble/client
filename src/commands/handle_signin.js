@@ -18,8 +18,8 @@ async function handleSignIn() {
       questions.signIn.PASSWORD,
     ]);
 
-    const user = new User(username, password);
-    await user.signIn();
+    const user = new User(username);
+    await user.signIn(password);
 
     clear();
     console.log(figlet.textSync('Nim', 'Standard'));
