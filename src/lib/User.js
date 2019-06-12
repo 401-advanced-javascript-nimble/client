@@ -9,19 +9,18 @@ const config = new Configstore(packageJson.name);
 
 class User {
   constructor(username, password) {
-    (this.username = username), (this.password = password);
+    this.username = username;
   }
 
   /**
    * signUp also signIn the user
    */
-  async signUp() {
+  async signUp(password) {
     try {
       const response = await superagent
         .post(`${process.env.API_SERVER_URI}/signup`)
         .send({
           username: this.username,
-          password: this.password,
         });
 
       const token = response.res.text;
@@ -36,11 +35,11 @@ class User {
     }
   }
 
-  async signIn() {
+  async signIn(password) {
     try {
       const response = await superagent
         .post(`${process.env.API_SERVER_URI}/signin`)
-        .auth(this.username, this.password);
+        .auth(this.username);
 
       const token = response.res.text;
 
