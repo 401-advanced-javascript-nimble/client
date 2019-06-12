@@ -28,15 +28,7 @@ module.exports = async () => {
     console.log(figlet.textSync('Nim', 'Standard'));
 
     if (isReturning) {
-      const onSubmit = (prompt, response) => {
-        switch (prompt.name) {
-        case 'existingUser':
-          return false;
-        }
-      };
-      const fn = await prompts(menu(username));
-
-      if (typeof fn.value === 'function') fn.value();
+      menu(username);
     } else {
       const { hasAccount, username, password } = await prompts(
         newUserQuestions
@@ -44,8 +36,13 @@ module.exports = async () => {
 
       const user = new User(username, password);
 
-      if (hasAccount) user.signIn();
-      else user.signUp();
+      if (hasAccount) await user.signIn();
+      else await user.signUp();
+
+      clear();
+      console.log(figlet.textSync('Nim', 'Standard'));
+
+      await menu(username);
     }
   } catch (error) {
     console.error(error);
