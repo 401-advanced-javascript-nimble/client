@@ -24,7 +24,7 @@ program.command('leaderboard').action(handleLeaderboard);
 program.command('signout').action(handleSignOut);
 
 /**
- * Show help when no command is provided
+ * Show welcome screen when no command is provided
  */
 if (!process.argv.slice(2).length) {
   welcomeScreen();
