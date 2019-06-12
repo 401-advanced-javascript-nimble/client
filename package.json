@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/401-advanced-javascript-nimble/client#readme",
   "dependencies": {
+    "clear": "^0.1.0",
     "commander": "^2.20.0",
     "configstore": "^4.0.0",
     "dotenv": "^8.0.0",
