@@ -8,10 +8,12 @@ const packageJson = require('../../package.json');
 
 const config = new Configstore(packageJson.name);
 
-function sendWin() {
+async function sendWin() {
   const token = config.get('auth.token');
-  superagent.post(`${process.env.API_SERVER_URI}/updateStats`)
-    .authBearer(token);
+  await superagent.patch(`${process.env.API_SERVER_URI}/updateStats`)
+    .authBearer(token)
+    .send({win: 'win'});
+  return;
 }
 
 module.exports = sendWin;

@@ -28,6 +28,7 @@ socket.on('game over', (payload) => {
 });
 
 socket.on('win', () => {
+  console.log('You Won!!');
   sendWin();
 });
 
