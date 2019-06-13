@@ -19,7 +19,7 @@ describe('User', () => {
     expect(user.username).toEqual('testuser');
   });
 
-  describe('Sign Up', () => {
+  xdescribe('Sign Up', () => {
     it('can sign up', async () => {
       const newUser = new User('automated-test');
       await newUser.signUp('secret');
@@ -27,14 +27,14 @@ describe('User', () => {
     });
   });
 
-  describe('Sign In', () => {
+  xdescribe('Sign In', () => {
     it('can sign in', async () => {
       await user.signIn(password);
       expect(config.get('auth.username')).toEqual('testuser');
     });
   });
 
-  describe('Sign Out', () => {
+  xdescribe('Sign Out', () => {
     it('can sign out', () => {
       User.signOut();
       expect(config.get('auth.token')).toBeUndefined();

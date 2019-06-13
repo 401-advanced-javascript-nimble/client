@@ -29,4 +29,4 @@ async function handleSignIn() {
   }
 }
 
-module.exports = handleSignIn;
+exports.play = 'asdf';

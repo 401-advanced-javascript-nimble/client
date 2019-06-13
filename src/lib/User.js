@@ -13,7 +13,7 @@ const config = new Configstore(packageJson.name);
 class User {
   /**
    * Create a user
-   * @param {*} username
+   * @param {string} username
    */
   constructor(username) {
     this.username = username;
@@ -23,6 +23,7 @@ class User {
    * Create a new user
    * Sign In
    * And store the token with Configstore
+   * @param {string} password
    */
   async signUp(password) {
     try {
@@ -46,6 +47,7 @@ class User {
   /**
    * Sign In
    * And store the token with Configstore
+   * @param {string} password
    */
   async signIn(password) {
     try {
@@ -65,6 +67,7 @@ class User {
 
   /**
    * Delete the stored token
+   * The user is kept on purpose, this is questionnable though
    */
   static signOut() {
     config.delete('auth.token');
