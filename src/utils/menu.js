@@ -22,6 +22,7 @@ module.exports = async username => {
         { title: '🎮  Play', value: handlePlay },
         { title: '🏆  Leaderboard', value: handleLeaderboard },
         { title: '👋  Sign Out', value: handleSignOut },
+        { title: '🚪  Quit', value: () => true },
       ],
       initial: 0,
     });
