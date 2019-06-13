@@ -29,7 +29,7 @@ module.exports = async () => {
     console.log(figlet.textSync('Nim', 'Standard'));
 
     if (isReturning) {
-      menu(username);
+      await menu(username);
     } else {
       const { hasAccount, username, password } = await prompts(
         newUserQuestions
