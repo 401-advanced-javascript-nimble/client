@@ -1,3 +1,4 @@
+/** @module game */
 'use strict';
 
 require('dotenv').config();
@@ -6,7 +7,13 @@ const prompts = require('prompts');
 const User = require('../lib/user.js');
 const ansiEscapes = require('ansi-escapes');
 
+/**
+ * Class representing a game
+ */
 class Game {
+  /**
+   * Create a game
+   */
   constructor() {
     //Morgana - use deployed link
     this.socket = client.connect(process.env.SOCKET_SERVER_URL);
@@ -58,6 +65,9 @@ class Game {
 
   //Morgana - reusable prompt function
   //calls itself again if an invalid selection is made
+  /**
+   * @param {*} payload
+   */
   async showPrompt(payload) {
     //Morgana - payload at 0 is the game id, payload at 1 is the message
     console.log(payload[1]);
@@ -96,6 +106,12 @@ class Game {
 
   // Chris - checks and validates the players' inputs.
   // Morgana - Changed to reflect new stack structure
+  /**
+   *
+   * @param {*} stackChoice
+   * @param {*} numberToTake
+   * @param {*} stacks
+   */
   checkChoices(stackChoice, numberToTake, stacks) {
     // checks and validation for stackChoice
     stackChoice.toLowerCase();
