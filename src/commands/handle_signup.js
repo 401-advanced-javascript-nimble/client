@@ -1,3 +1,4 @@
+/** @module handle_signup */
 'use strict';
 
 require('dotenv').config();
@@ -11,6 +12,9 @@ const User = require('../lib/user.js');
 const menu = require('../utils/menu.js');
 const questions = require('../utils/questions.js');
 
+/**
+ * Handler function for the signup command
+ */
 async function handleSignUp() {
   try {
     const { username, password } = await prompts([

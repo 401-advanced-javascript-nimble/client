@@ -1,3 +1,4 @@
+/** @module game */
 'use strict';
 
 require('dotenv').config();
@@ -6,12 +7,23 @@ const prompts = require('prompts');
 const User = require('../lib/user.js');
 const ansiEscapes = require('ansi-escapes');
 
+/**
+ * Class representing a game
+ */
 class Game {
+  /**
+   * Create a game
+   */
   constructor() {
     //Morgana - use deployed link
     this.socket = client.connect(process.env.SOCKET_SERVER_URL);
     this.count = 1;
+  }
 
+  /**
+   * Start listening for events from the server
+   */
+  start() {
     //===================================
     // Client Socket
     //===================================
@@ -58,35 +70,45 @@ class Game {
 
   //Morgana - reusable prompt function
   //calls itself again if an invalid selection is made
+  /**
+   * @param {*} payload
+   */
   async showPrompt(payload) {
-    //Morgana - payload at 0 is the game id, payload at 1 is the message
-    console.log(payload[1]);
-    console.log('Your Turn!');
-    console.log('Time left: ', 20);
-    const gameID = payload[0];
-    const questions = [
-      {
-        type: 'text',
-        name: 'stack',
-        message: 'Which stack?',
-      },
-      {
-        type: 'number',
-        name: 'amount',
-        message: 'How much?',
-        onRender() {
-          this.count = 2;
+    try {
+      //Morgana - payload at 0 is the game id, payload at 1 is the message
+      console.log(payload[1]);
+      console.log('Your Turn!');
+      console.log('Time left: ', 20);
+      const gameID = payload[0];
+      const questions = [
+        {
+          type: 'text',
+          name: 'stack',
+          message: 'Which stack?',
         },
-      },
-    ];
+        {
+          type: 'number',
+          name: 'amount',
+          message: 'How much?',
+          onRender() {
+            this.count = 2;
+          },
+        },
+      ];
 
-    const response = await prompts(questions);
-    if (this.checkChoices(response.stack, response.amount, payload[1])) {
-      this.socket.emit('move', [gameID, response.stack, response.amount]);
-      this.count = 1;
-    } else {
-      this.count = 1;
-      this.showPrompt(payload);
+      const response = await prompts(questions, () => {
+        this.socket.close();
+      });
+      if (this.checkChoices(response.stack, response.amount, payload[1])) {
+        this.socket.emit('move', [gameID, response.stack, response.amount]);
+        this.count = 1;
+      } else {
+        this.count = 1;
+        this.showPrompt(payload);
+      }
+    } catch (error) {
+      // If the user exit the prompt, it emitts a disconect event and end the game
+      this.socket.close();
     }
   }
 
@@ -96,6 +118,12 @@ class Game {
 
   // Chris - checks and validates the players' inputs.
   // Morgana - Changed to reflect new stack structure
+  /**
+   *
+   * @param {*} stackChoice
+   * @param {*} numberToTake
+   * @param {*} stacks
+   */
   checkChoices(stackChoice, numberToTake, stacks) {
     // checks and validation for stackChoice
     stackChoice.toLowerCase();

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/game.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/game.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module game */
+'use strict';
+
+require('dotenv').config();
+const client = require('socket.io-client');
+const prompts = require('prompts');
+const User = require('../lib/user.js');
+const ansiEscapes = require('ansi-escapes');
+
+/**
+ * Class representing a game
+ */
+class Game {
+  /**
+   * Create a game
+   */
+  constructor() {
+    //Morgana - use deployed link
+    this.socket = client.connect(process.env.SOCKET_SERVER_URL);
+    this.count = 1;
+
+    //===================================
+    // Client Socket
+    //===================================
+    this.socket.on('message-from-server', message => {
+      console.log(message);
+    });
+
+    this.socket.on('turn', payload => {
+      // process.stdout.write(ansiEscapes.clearScreen);
+      this.showPrompt(payload);
+    });
+
+    this.socket.on('countdown', payload => {
+      process.stdout.write(ansiEscapes.cursorSavePosition);
+      process.stdout.write(ansiEscapes.cursorPrevLine);
+      if (this.count === 2) {
+        process.stdout.write(ansiEscapes.cursorPrevLine);
+      }
+      process.stdout.clearLine();
+      if (payload >= 0) {
+        process.stdout.write('Time left: ');
+        process.stdout.write(payload.toString());
+        if (payload &lt; 10) {
+          process.stdout.write(' &lt;-- Time\'s almost up, hurry!');
+        }
+      }
+      process.stdout.write(ansiEscapes.cursorRestorePosition);
+    });
+
+    this.socket.on('game over', payload => {
+      console.log('Game Over!');
+      this.socket.close();
+    });
+
+    this.socket.on('win', () => {
+      console.log('You Won!!');
+      User.sendWin();
+    });
+  }
+
+  //===================================
+  // Prompt Functionality
+  //===================================
+
+  //Morgana - reusable prompt function
+  //calls itself again if an invalid selection is made
+  /**
+   * @param {*} payload
+   */
+  async showPrompt(payload) {
+    //Morgana - payload at 0 is the game id, payload at 1 is the message
+    console.log(payload[1]);
+    console.log('Your Turn!');
+    console.log('Time left: ', 20);
+    const gameID = payload[0];
+    const questions = [
+      {
+        type: 'text',
+        name: 'stack',
+        message: 'Which stack?',
+      },
+      {
+        type: 'number',
+        name: 'amount',
+        message: 'How much?',
+        onRender() {
+          this.count = 2;
+        },
+      },
+    ];
+
+    const response = await prompts(questions);
+    if (this.checkChoices(response.stack, response.amount, payload[1])) {
+      this.socket.emit('move', [gameID, response.stack, response.amount]);
+      this.count = 1;
+    } else {
+      this.count = 1;
+      this.showPrompt(payload);
+    }
+  }
+
+  //===================================
+  // Client Side Game Logic
+  //===================================
+
+  // Chris - checks and validates the players' inputs.
+  // Morgana - Changed to reflect new stack structure
+  /**
+   *
+   * @param {*} stackChoice
+   * @param {*} numberToTake
+   * @param {*} stacks
+   */
+  checkChoices(stackChoice, numberToTake, stacks) {
+    // checks and validation for stackChoice
+    stackChoice.toLowerCase();
+    if (!Object.keys(stacks).includes(stackChoice)) {
+      console.log('Invalid stack, please pick again.');
+      return false;
+    }
+
+    // checks and validation for numberToTake
+    if (typeof numberToTake !== 'number') {
+      numberToTake = parseInt(numberToTake);
+    }
+    if (
+      isNaN(numberToTake) ||
+      numberToTake &lt; 1 ||
+      numberToTake > stacks[stackChoice]
+    ) {
+      console.log('Invalid amount, please pick again');
+      return false;
+    }
+
+    // Chris - if all the above is good continue
+    return true;
+  }
+}
+
+module.exports = Game;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-game.html">game</a></li><li><a href="module-handle_leaderboard.html">handle_leaderboard</a></li><li><a href="module-handle_play.html">handle_play</a></li><li><a href="module-handle_signin.html">handle_signin</a></li><li><a href="module-handle_signout.html">handle_signout</a></li><li><a href="module-handle_signup.html">handle_signup</a></li><li><a href="module-menu.html">menu</a></li><li><a href="module-user.html">user</a></li><li><a href="module-validate_email.html">validate_email</a></li><li><a href="module-validate_password.html">validate_password</a></li><li><a href="module-welcome_screen.html">welcome_screen</a></li></ul><h3>Classes</h3><ul><li><a href="module-game-Game.html">Game</a></li><li><a href="module-user-User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#handleSignUp">handleSignUp</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.2</a> on Thu Jun 13 2019 11:05:17 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

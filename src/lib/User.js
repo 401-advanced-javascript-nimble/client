@@ -1,3 +1,6 @@
+/** @module user */
+'use strict';
+
 require('dotenv').config();
 
 const superagent = require('superagent');
@@ -90,10 +93,13 @@ class User {
         throw 'No token';
       }
     } catch (error) {
-      console.error(error);
+      console.error('😨  Oh No! Something went wrong...');
     }
   }
 
+  /**
+   * Update the user's stats
+   */
   static async sendWin() {
     const token = config.get('auth.token');
     await superagent

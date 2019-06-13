@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --coverage"
+    "test": "jest --verbose --coverage",
+    "jsdoc": "jsdoc -c ./docs/config/jsdoc.config.json",
+    "lint": "eslint '**/*.js'"
   },
   "bin": {
-    "nim": "./index.js"
+    "nim": "./src/index.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +24,6 @@
   "homepage": "https://github.com/401-advanced-javascript-nimble/client#readme",
   "dependencies": {
     "ansi-escapes": "^4.2.0",
-    "cf-supergoose": "^1.0.2",
     "clear": "^0.1.0",
     "cli-table": "^0.3.1",
     "commander": "^2.20.0",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "jest": "^24.8.0"
+    "jest": "^24.8.0",
+    "jsdoc": "^3.6.2"
   }
 }

@@ -1,3 +1,6 @@
+/** @module welcome_screen */
+'use strict';
+
 const prompts = require('prompts');
 const figlet = require('figlet');
 const clear = require('clear');

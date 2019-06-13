@@ -34,10 +34,17 @@ describe('User', () => {
     });
   });
 
-  xdescribe('Sign Out', () => {
+  describe('Sign Out', () => {
     it('can sign out', () => {
       User.signOut();
       expect(config.get('auth.token')).toBeUndefined();
+    });
+  });
+
+  xdescribe('Validate token', () => {
+    it('can validate a token', async () => {
+      await user.signIn(password);
+      expect(User.validateToken()).resolves.toBeTruthy();
     });
   });
 });

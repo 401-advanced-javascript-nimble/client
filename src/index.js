@@ -2,16 +2,16 @@
 const commander = require('commander');
 const program = new commander.Command();
 
-const welcomeScreen = require('./src/lib/welcome_screen.js');
+const welcomeScreen = require('./lib/welcome_screen.js');
 
 /**
  * Handler functions
  */
-const handleSignUp = require('./src/commands/handle_signup.js');
-const handleSignIn = require('./src/commands/handle_signin.js');
-const handlePlay = require('./src/commands/handle_play.js');
-const handleLeaderboard = require('./src/commands/handle_leaderboard.js');
-const handleSignOut = require('./src/commands/handle_signout.js');
+const handleSignUp = require('./commands/handle_signup.js');
+const handleSignIn = require('./commands/handle_signin.js');
+const handlePlay = require('./commands/handle_play.js');
+const handleLeaderboard = require('./commands/handle_leaderboard.js');
+const handleSignOut = require('./commands/handle_signout.js');
 
 /**
  * Commands
