@@ -41,6 +41,7 @@ class Game {
     });
 
     this.socket.on('countdown', payload => {
+      /*
       process.stdout.write(ansiEscapes.cursorSavePosition);
       process.stdout.write(ansiEscapes.cursorPrevLine);
       if (this.count === 2) {
@@ -55,6 +56,7 @@ class Game {
         }
       }
       process.stdout.write(ansiEscapes.cursorRestorePosition);
+      */
     });
 
     this.socket.on('game over', payload => {
@@ -83,17 +85,32 @@ class Game {
       console.log(payload[1]);
       console.log('Your Turn!');
       console.log('Time left: ', 20);
+
+      Object.keys(payload[1]).forEach(key => {
+        console.log(
+          `${key}(${payload[1][key].toString().padStart(2, '0')}) ${'█'.repeat(
+            payload[1][key]
+          )}`
+        );
+      });
+
       const gameID = payload[0];
       const questions = [
         {
-          type: 'text',
+          type: 'select',
           name: 'stack',
           message: 'Which stack?',
+          choices: Object.keys(payload[1]).map(key => ({
+            title: key,
+            value: key,
+            disabled: payload[1][key] === 0,
+          })),
         },
         {
           type: 'number',
           name: 'amount',
           message: 'How much?',
+          min: 1,
           onRender() {
             this.count = 2;
           },
@@ -108,7 +125,7 @@ class Game {
         this.count = 1;
       } else {
         this.count = 1;
-        this.showPrompt(payload);
+        await this.showPrompt(payload);
       }
     } catch (error) {
       // If the user exit the prompt, it emitts a disconect event and end the game
