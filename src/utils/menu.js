@@ -10,9 +10,9 @@ const handleSignOut = require('../commands/handle_signout.js');
  * @param
  */
 module.exports = async username => {
-  const fn = await prompts({
+  const { fn } = await prompts({
     type: 'select',
-    name: 'value',
+    name: 'fn',
     message: `Welcome ${username}!`,
     choices: [
       { title: '🎮  Play', value: handlePlay },
@@ -21,5 +21,5 @@ module.exports = async username => {
     ],
     initial: 0,
   });
-  if (typeof fn.value === 'function') fn.value();
+  if (typeof fn === 'function') fn();
 };
