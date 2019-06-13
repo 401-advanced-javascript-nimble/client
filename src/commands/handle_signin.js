@@ -6,7 +6,7 @@ const prompts = require('prompts');
 const clear = require('clear');
 const figlet = require('figlet');
 
-const User = require('../lib/User.js');
+const User = require('../lib/user.js');
 
 const menu = require('../utils/menu.js');
 const questions = require('../utils/questions.js');

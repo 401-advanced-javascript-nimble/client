@@ -5,7 +5,7 @@ module.exports = {
   WELCOME: {
     type: 'toggle',
     name: 'hasAccount',
-    message: `Welcome stranger, do you have an account?`,
+    message: `Welcome! Do you have an account?`,
     active: 'maybe',
     inactive: 'no',
   },

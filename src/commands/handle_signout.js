@@ -1,6 +1,6 @@
 'use strict';
 
-const User = require('../lib/User.js');
+const User = require('../lib/user.js');
 
 function handleSignOut() {
   User.signOut();
