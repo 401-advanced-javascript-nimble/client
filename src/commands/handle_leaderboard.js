@@ -7,15 +7,16 @@ const figlet = require('figlet');
 
 const scores = new Table({ head: ['Player', 'Wins'] });
 
+const API_SERVER_URI =
+  process.env.API_SERVER_URI || 'https://nimble-api-server.herokuapp.com';
+
 /**
  * Handler function for the leaderboard command
  */
 async function leaderboard() {
   try {
     //superagent request to the learderboard route
-    const result = await superagent.get(
-      `${process.env.API_SERVER_URI}/leaderboard`
-    );
+    const result = await superagent.get(`${API_SERVER_URI}/leaderboard`);
     const topScores = result.body.TopScores;
 
     topScores.forEach(player => {
