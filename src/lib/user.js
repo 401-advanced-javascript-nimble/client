@@ -11,6 +11,9 @@ const packageJson = require('../../package.json');
 
 const config = new Configstore(packageJson.name);
 
+const API_SERVER_URI =
+  process.env.API_SERVER_URI || 'https://nimble-api-server.herokuapp.com';
+
 /**
  * Class representing a user
  */
@@ -31,12 +34,10 @@ class User {
    */
   async signUp(password) {
     try {
-      const response = await superagent
-        .post(`${process.env.API_SERVER_URI}/signup`)
-        .send({
-          username: this.username,
-          password,
-        });
+      const response = await superagent.post(`${API_SERVER_URI}/signup`).send({
+        username: this.username,
+        password,
+      });
 
       const token = response.res.text;
 
@@ -56,7 +57,7 @@ class User {
   async signIn(password) {
     try {
       const response = await superagent
-        .post(`${process.env.API_SERVER_URI}/signin`)
+        .post(`${API_SERVER_URI}/signin`)
         .auth(this.username, password);
 
       const token = response.res.text;
@@ -86,7 +87,7 @@ class User {
       if (config.has('auth.token')) {
         const token = config.get('auth.token');
         const { status } = await superagent
-          .post(`${process.env.API_SERVER_URI}/validate`)
+          .post(`${API_SERVER_URI}/validate`)
           .authBearer(token);
         return status === 204;
       } else {
@@ -103,7 +104,7 @@ class User {
   static async sendWin() {
     const token = config.get('auth.token');
     await superagent
-      .patch(`${process.env.API_SERVER_URI}/updateStats`)
+      .patch(`${API_SERVER_URI}/updateStats`)
       .authBearer(token)
       .send({ win: 'win' });
     return;

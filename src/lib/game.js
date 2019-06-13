@@ -7,6 +7,10 @@ const prompts = require('prompts');
 const User = require('../lib/user.js');
 const ansiEscapes = require('ansi-escapes');
 
+const SOCKET_SERVER_URL =
+  process.env.SOCKET_SERVER_URL ||
+  'https://401-advanced-javascript-nimble-socket-server.azurewebsites.net';
+
 /**
  * Class representing a game
  */
@@ -16,7 +20,7 @@ class Game {
    */
   constructor() {
     //Morgana - use deployed link
-    this.socket = client.connect(process.env.SOCKET_SERVER_URL);
+    this.socket = client.connect(SOCKET_SERVER_URL);
     this.count = 1;
   }
 
