@@ -69,34 +69,40 @@ class Game {
    * @param {*} payload
    */
   async showPrompt(payload) {
-    //Morgana - payload at 0 is the game id, payload at 1 is the message
-    console.log(payload[1]);
-    console.log('Your Turn!');
-    console.log('Time left: ', 20);
-    const gameID = payload[0];
-    const questions = [
-      {
-        type: 'text',
-        name: 'stack',
-        message: 'Which stack?',
-      },
-      {
-        type: 'number',
-        name: 'amount',
-        message: 'How much?',
-        onRender() {
-          this.count = 2;
+    try {
+      //Morgana - payload at 0 is the game id, payload at 1 is the message
+      console.log(payload[1]);
+      console.log('Your Turn!');
+      console.log('Time left: ', 20);
+      const gameID = payload[0];
+      const questions = [
+        {
+          type: 'text',
+          name: 'stack',
+          message: 'Which stack?',
         },
-      },
-    ];
+        {
+          type: 'number',
+          name: 'amount',
+          message: 'How much?',
+          onRender() {
+            this.count = 2;
+          },
+        },
+      ];
 
-    const response = await prompts(questions);
-    if (this.checkChoices(response.stack, response.amount, payload[1])) {
-      this.socket.emit('move', [gameID, response.stack, response.amount]);
-      this.count = 1;
-    } else {
-      this.count = 1;
-      this.showPrompt(payload);
+      const response = await prompts(questions, () => {
+        this.socket.close();
+      });
+      if (this.checkChoices(response.stack, response.amount, payload[1])) {
+        this.socket.emit('move', [gameID, response.stack, response.amount]);
+        this.count = 1;
+      } else {
+        this.count = 1;
+        this.showPrompt(payload);
+      }
+    } catch (error) {
+      this.socket.close();
     }
   }
 
