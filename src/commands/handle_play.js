@@ -10,7 +10,7 @@ const User = require('../lib/user.js');
 async function play() {
   try {
     if (await User.validateToken()) {
-      new Game();
+      new Game().start();
     } else {
       console.log('Invalid user, please sign in again');
     }

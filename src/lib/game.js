@@ -18,7 +18,12 @@ class Game {
     //Morgana - use deployed link
     this.socket = client.connect(process.env.SOCKET_SERVER_URL);
     this.count = 1;
+  }
 
+  /**
+   * Start listening for events from the server
+   */
+  start() {
     //===================================
     // Client Socket
     //===================================
@@ -102,6 +107,7 @@ class Game {
         this.showPrompt(payload);
       }
     } catch (error) {
+      // If the user exit the prompt, it emitts a disconect event and end the game
       this.socket.close();
     }
   }

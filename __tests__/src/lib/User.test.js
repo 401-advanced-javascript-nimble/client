@@ -27,7 +27,7 @@ describe('User', () => {
     });
   });
 
-  describe('Sign In', () => {
+  xdescribe('Sign In', () => {
     it('can sign in', async () => {
       await user.signIn(password);
       expect(config.get('auth.username')).toEqual('testuser');
@@ -41,7 +41,7 @@ describe('User', () => {
     });
   });
 
-  describe('Validate token', () => {
+  xdescribe('Validate token', () => {
     it('can validate a token', async () => {
       await user.signIn(password);
       expect(User.validateToken()).resolves.toBeTruthy();
