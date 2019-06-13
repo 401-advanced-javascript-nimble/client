@@ -66,13 +66,10 @@ class Game {
       this.countdown = setInterval(this.decrement, 1000, this.timeLeft);
     });
 
-    // this.socket.on('countdown', payload => {
-    //   this.timeLeft = payload;
-    // });
-
     this.socket.on('game over', payload => {
       console.log('Game Over!');
       this.socket.close();
+      process.exit();
     });
 
     this.socket.on('win', () => {
@@ -94,19 +91,34 @@ class Game {
     try {
       //Morgana - payload at 0 is the game id, payload at 1 is the message
       console.log(payload[1]);
+    
+      Object.keys(payload[1]).forEach(key => {
+        console.log(
+          `${key}(${payload[1][key].toString().padStart(2, '0')}) ${'█'.repeat(
+            payload[1][key]
+          )}`
+        );
+      });
+
       console.log('Your Turn!');
       console.log('Time left: 20');
       const gameID = payload[0];
       const questions = [
         {
-          type: 'text',
+          type: 'select',
           name: 'stack',
           message: 'Which stack?',
+          choices: Object.keys(payload[1]).map(key => ({
+            title: key,
+            value: key,
+            disabled: payload[1][key] === 0,
+          })),
         },
         {
           type: 'number',
           name: 'amount',
           message: 'How much?',
+          min: 1,
           onRender() {
             this.count = 2;
           },
@@ -123,7 +135,7 @@ class Game {
         this.count = 1;
       } else {
         this.count = 1;
-        this.showPrompt(payload);
+        await this.showPrompt(payload);
       }
     } catch (error) {
       // If the user exit the prompt, it emitts a disconect event and end the game
