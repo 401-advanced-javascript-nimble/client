@@ -93,7 +93,7 @@ class User {
         throw 'No token';
       }
     } catch (error) {
-      console.error(error);
+      console.error('😨  Oh No! Something went wrong...');
     }
   }
 
