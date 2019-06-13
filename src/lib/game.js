@@ -3,7 +3,7 @@
 require('dotenv').config();
 const client = require('socket.io-client');
 const prompts = require('prompts');
-const sendWin = require('../utils/send_win.js');
+const User = require('../lib/user.js');
 const ansiEscapes = require('ansi-escapes');
 
 class Game {
@@ -48,7 +48,7 @@ class Game {
 
     this.socket.on('win', () => {
       console.log('You Won!!');
-      sendWin();
+      User.sendWin();
     });
   }
 

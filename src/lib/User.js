@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const superagent = require('superagent');
+require('superagent-auth-bearer')(superagent);
 
 const Configstore = require('configstore');
 const packageJson = require('../../package.json');
@@ -40,7 +41,7 @@ class User {
       config.set('auth.token', token);
       config.set('auth.username', this.username);
     } catch (error) {
-      throw new Error();
+      throw error;
     }
   }
 
@@ -61,7 +62,7 @@ class User {
       config.set('auth.token', token);
       config.set('auth.username', this.username);
     } catch (error) {
-      throw new Error();
+      throw error;
     }
   }
 
@@ -71,6 +72,35 @@ class User {
    */
   static signOut() {
     config.delete('auth.token');
+  }
+
+  /**
+   * Check if a token exists and if it is valid
+   */
+  static async validateToken() {
+    try {
+      // Check if the token exist in the Configstorage and validate it against the API server
+      if (config.has('auth.token')) {
+        const token = config.get('auth.token');
+        const { status } = await superagent
+          .post(`${process.env.API_SERVER_URI}/validate`)
+          .authBearer(token);
+        return status === 204;
+      } else {
+        throw 'No token';
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  static async sendWin() {
+    const token = config.get('auth.token');
+    await superagent
+      .patch(`${process.env.API_SERVER_URI}/updateStats`)
+      .authBearer(token)
+      .send({ win: 'win' });
+    return;
   }
 }
 

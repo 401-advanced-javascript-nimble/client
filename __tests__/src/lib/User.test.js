@@ -1,4 +1,4 @@
-const User = require('../../../src/lib/User.js');
+const User = require('../../../src/lib/user.js');
 
 const Configstore = require('configstore');
 const packageJson = require('../../../package.json');

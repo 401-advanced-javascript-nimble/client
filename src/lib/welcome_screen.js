@@ -3,7 +3,7 @@ const figlet = require('figlet');
 const clear = require('clear');
 const Configstore = require('configstore');
 
-const User = require('../lib/User.js');
+const User = require('../lib/user.js');
 
 const questions = require('../utils/questions.js');
 const menu = require('../utils/menu.js');
@@ -23,7 +23,6 @@ const newUserQuestions = [
 module.exports = async () => {
   try {
     clear();
-
     console.log(figlet.textSync('Nim', 'Standard'));
 
     if (isReturning) {

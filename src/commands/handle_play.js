@@ -1,10 +1,11 @@
 'use strict';
 
-const isTokenValid = require('../utils/is_token_valid.js');
+const Game = require('../lib/game.js');
+const User = require('../lib/user.js');
 
 async function play() {
-  if (await isTokenValid()) {
-    require('../lib/client.js');
+  if (await User.validateToken()) {
+    new Game();
   } else {
     console.log('Invalid user, please sign in again');
   }

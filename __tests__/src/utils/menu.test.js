@@ -1,7 +1,6 @@
 const menu = require('../../../src/utils/menu.js');
 
+beforeAll(() => {});
 describe('Menu', () => {
-  it('should ', () => {
-    console.log(menu());
-  });
+  it('should ', () => {});
 });
