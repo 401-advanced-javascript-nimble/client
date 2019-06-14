@@ -22,8 +22,33 @@ class Game {
     //Morgana - use deployed link
     this.socket = client.connect(SOCKET_SERVER_URL);
     this.count = 1;
+    this.timeLeft = 20;
+    this.countdown = null; 
+    this.decrement = this.decrement.bind(this); 
   }
 
+  decrement() {
+    this.timeLeft--;
+    this.drawTimer(this.timeLeft);
+  }
+
+  drawTimer(timeLeft) {
+    process.stdout.write(ansiEscapes.cursorSavePosition);
+    process.stdout.write(ansiEscapes.cursorPrevLine);
+    process.stdout.write(ansiEscapes.cursorPrevLine);
+    process.stdout.clearLine();
+    process.stdout.write('Your Turn!');
+    process.stdout.write(ansiEscapes.cursorNextLine);
+    process.stdout.clearLine();
+    if (timeLeft >= 0) {
+      process.stdout.write('Time left: ');
+      process.stdout.write(timeLeft.toString());
+      if (timeLeft < 10) {
+        process.stdout.write(' <-- Time\'s almost up, hurry!');
+      }
+    }
+    process.stdout.write(ansiEscapes.cursorRestorePosition);
+  }
   /**
    * Start listening for events from the server
    */
@@ -38,30 +63,13 @@ class Game {
     this.socket.on('turn', payload => {
       // process.stdout.write(ansiEscapes.clearScreen);
       this.showPrompt(payload);
-    });
-
-    this.socket.on('countdown', payload => {
-      /*
-      process.stdout.write(ansiEscapes.cursorSavePosition);
-      process.stdout.write(ansiEscapes.cursorPrevLine);
-      if (this.count === 2) {
-        process.stdout.write(ansiEscapes.cursorPrevLine);
-      }
-      process.stdout.clearLine();
-      if (payload >= 0) {
-        process.stdout.write('Time left: ');
-        process.stdout.write(payload.toString());
-        if (payload < 10) {
-          process.stdout.write(' <-- Time\'s almost up, hurry!');
-        }
-      }
-      process.stdout.write(ansiEscapes.cursorRestorePosition);
-      */
+      this.countdown = setInterval(this.decrement, 1000, this.timeLeft);
     });
 
     this.socket.on('game over', payload => {
       console.log('Game Over!');
       this.socket.close();
+      process.exit();
     });
 
     this.socket.on('win', () => {
@@ -83,9 +91,7 @@ class Game {
     try {
       //Morgana - payload at 0 is the game id, payload at 1 is the message
       console.log(payload[1]);
-      console.log('Your Turn!');
-      console.log('Time left: ', 20);
-
+    
       Object.keys(payload[1]).forEach(key => {
         console.log(
           `${key}(${payload[1][key].toString().padStart(2, '0')}) ${'█'.repeat(
@@ -94,6 +100,8 @@ class Game {
         );
       });
 
+      console.log('Your Turn!');
+      console.log('Time left: 20');
       const gameID = payload[0];
       const questions = [
         {
@@ -121,6 +129,8 @@ class Game {
         this.socket.close();
       });
       if (this.checkChoices(response.stack, response.amount, payload[1])) {
+        clearInterval(this.countdown);
+        this.timeLeft = 20;
         this.socket.emit('move', [gameID, response.stack, response.amount]);
         this.count = 1;
       } else {
