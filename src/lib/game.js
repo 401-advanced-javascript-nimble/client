@@ -23,8 +23,8 @@ class Game {
     this.socket = client.connect(SOCKET_SERVER_URL);
     this.count = 1;
     this.timeLeft = 20;
-    this.countdown = null; 
-    this.decrement = this.decrement.bind(this); 
+    this.countdown = null;
+    this.decrement = this.decrement.bind(this);
   }
 
   decrement() {
@@ -56,7 +56,6 @@ class Game {
     process.stdout.write(ansiEscapes.cursorNextLine);
     process.stdout.write(ansiEscapes.cursorNextLine);
     process.stdout.write(ansiEscapes.cursorNextLine);
- 
   }
   /**
    * Start listening for events from the server
@@ -75,15 +74,13 @@ class Game {
       this.countdown = setInterval(this.decrement, 1000, this.timeLeft);
     });
 
-
-
     this.socket.on('game over', payload => {
       console.log('Game Over!');
       this.socket.close();
     });
 
     this.socket.on('win', () => {
-      console.log('You Won!!');
+      console.log('👍  You Won');
       User.sendWin();
     });
   }
@@ -101,7 +98,7 @@ class Game {
     try {
       //Morgana - payload at 0 is the game id, payload at 1 is the message
       console.log(payload[1]);
-      
+
       Object.keys(payload[1]).forEach(key => {
         console.log(
           `${key}(${payload[1][key].toString().padStart(2, '0')}) ${'█'.repeat(
@@ -118,6 +115,7 @@ class Game {
           type: 'select',
           name: 'stack',
           message: 'Which stack?',
+          hint: 'Use ▲ ▼ and ⏎',
           choices: Object.keys(payload[1]).map(key => ({
             title: key,
             value: key,
@@ -129,9 +127,9 @@ class Game {
           name: 'amount',
           message: 'How much?',
           min: 1,
-          firstRender() {  
+          firstRender() {
             console.log('');
-            console.log('');      
+            console.log('');
           },
         },
       ];

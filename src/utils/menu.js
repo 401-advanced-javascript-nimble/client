@@ -18,6 +18,7 @@ module.exports = async username => {
       type: 'select',
       name: 'fn',
       message: `Welcome ${username}!`,
+      hint: 'Use ▲ ▼ and ⏎',
       choices: [
         { title: '🎮  Play', value: handlePlay },
         { title: '🏆  Leaderboard', value: handleLeaderboard },
