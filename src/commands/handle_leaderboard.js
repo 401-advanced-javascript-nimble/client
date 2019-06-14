@@ -4,6 +4,7 @@
 const superagent = require('superagent');
 const Table = require('cli-table');
 const figlet = require('figlet');
+const clear = require('clear');
 
 const scores = new Table({ head: ['Player', 'Wins'] });
 
@@ -23,6 +24,7 @@ async function leaderboard() {
       scores.push([player.username, player.wins]);
     });
 
+    clear();
     figlet('LeaderBoard', (err, data) => {
       console.log(data);
       console.log(scores.toString());
