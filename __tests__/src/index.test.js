@@ -1,3 +1,0 @@
-describe('CLI', () => {
-  it('should ', () => {});
-});
