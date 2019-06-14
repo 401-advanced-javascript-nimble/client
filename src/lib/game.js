@@ -33,7 +33,7 @@ class Game {
   }
 
   drawTimer(timeLeft) {
-    process.stdout.write(ansiEscapes.cursorSavePosition);
+    // process.stdout.write(ansiEscapes.cursorSavePosition);
     process.stdout.write(ansiEscapes.cursorPrevLine);
     process.stdout.write(ansiEscapes.cursorPrevLine);
     process.stdout.write(ansiEscapes.cursorPrevLine);
@@ -50,7 +50,13 @@ class Game {
         process.stdout.write(' <-- Time\'s almost up, hurry!');
       }
     }
-    process.stdout.write(ansiEscapes.cursorRestorePosition);
+    // process.stdout.write(ansiEscapes.cursorRestorePosition);
+    process.stdout.write(ansiEscapes.cursorHide);
+    process.stdout.write(ansiEscapes.cursorNextLine);
+    process.stdout.write(ansiEscapes.cursorNextLine);
+    process.stdout.write(ansiEscapes.cursorNextLine);
+    process.stdout.write(ansiEscapes.cursorNextLine);
+ 
   }
   /**
    * Start listening for events from the server
