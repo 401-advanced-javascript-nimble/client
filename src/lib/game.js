@@ -77,6 +77,7 @@ class Game {
     this.socket.on('game over', payload => {
       console.log('Game Over!');
       this.socket.close();
+      process.exit();
     });
 
     this.socket.on('win', () => {
